@@ -25,6 +25,7 @@
 #include <opencv2/opencv.hpp>
 #include "opencv2/cudafilters.hpp"
 #include "opencv2/cudaimgproc.hpp"
+#include <iostream>
 
 #define USE_GPU 1
 
@@ -44,8 +45,8 @@ int main(int, char**)
 {
         // putenv("GST_DEBUG=*:3");
         // char const *gst = "v4l2src device=/dev/video0 ! video/x-raw, width=1920, height=1080, format=(string)YV12 ! videoconvert ! appsink";
-        char const *gst = "v4l2src device=/dev/video0 ! video/x-raw, width=1920, height=1080, format=(string)YV12 ! videoconvert ! video/x-raw, format=(string)BGR ! appsink";
-
+       // char const *gst = "v4l2src device=/dev/video0 ! video/x-raw, width=1920, height=1080, format=(string)YV12 ! videoconvert ! video/x-raw, format=(string)BGR ! appsink";
+        char const *gst="nvcamerasrc ! video/x-raw(memory:NVMM), width=(int)1280, height=(int)720,format=(string)I420, framerate=(fraction)24/1 ! nvvidconv flip-method=2 ! video/x-raw, format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)BGR ! appsink";
         VideoCapture cap(gst);
         Mat frame, edges;
         int do_canny = 1;
@@ -85,6 +86,8 @@ int main(int, char**)
                         Ptr<cuda::CannyEdgeDetector> canny = cuda::createCannyEdgeDetector(cannyThreshold1, cannyThreshold2, 3);
                         canny->detect(g_blur, g_edges);
                         g_edges.download(edges);
+                      std::cout<<"use GPU"<<std::endl;
+
                 }
                 else
                 {
@@ -96,6 +99,7 @@ int main(int, char**)
                         cvtColor(frame, edges, CV_BGR2GRAY);
                         GaussianBlur(edges, edges, Size(7,7), gaussainBlurSigma / 100.0, gaussainBlurSigma / 100.0);
                         Canny(edges, edges, cannyThreshold1, cannyThreshold2, 3);
+                        std::cout<<"nouse GPU"<<std::endl;
                 } 
                 else
                 {
