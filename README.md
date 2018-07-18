@@ -7,3 +7,4 @@ some TX2 blog and code
 3. [ Jetson TX2--安装,配置pycharm](https://github.com/zhxing001/Jetson-TX2/blob/master/blog/3.%20Jetson%20TX2--%E5%AE%89%E8%A3%85%2C%E9%85%8D%E7%BD%AEpycharm.md)
 4. [Jetson TX2--配置远程连接](https://github.com/zhxing001/Jetson-TX2/blob/master/blog/4.%20TX2--%E9%85%8D%E7%BD%AE%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5.md)
 5. [Jetson TX2跑YoloV3](https://github.com/zhxing001/Jetson-TX2/blob/master/blog/5.%20Jetson-TX2%20%E8%B7%91YOLOv3.md)
+6. [Nsight Eclipse 连接TX2进行CUDA编程](https://github.com/zhxing001/Jetson-TX2/blob/master/blog/6.%20Nsight%20Eclipse%20%E8%BF%9E%E6%8E%A5TX2%E8%BF%9B%E8%A1%8CCUDA%E7%BC%96%E7%A8%8B.md)
