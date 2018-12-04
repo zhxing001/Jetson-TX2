@@ -4,6 +4,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+
+//下面这些函数声明都是一些可调用的函数，定义分别在不同的文件里，具体调用哪个需要看下面main函数里的参数
+
 extern void predict_classifier(char *datacfg, char *cfgfile, char *weightfile, char *filename, int top);
 extern void test_detector(char *datacfg, char *cfgfile, char *weightfile, char *filename, float thresh, float hier_thresh, char *outfile, int fullscreen);
 extern void run_yolo(int argc, char **argv);
@@ -188,14 +191,16 @@ void partial(char *cfgfile, char *weightfile, char *outfile, int max)
     save_weights_upto(net, outfile, max);
 }
 
+//这个应该是打印权重的意思
 void print_weights(char *cfgfile, char *weightfile, int n)
 {
     gpu_index = -1;
     network *net = load_network(cfgfile, weightfile, 1);
-    layer l = net->layers[n];
+    layer l = net->layers[n];           //层数
     int i, j;
     //printf("[");
-    for(i = 0; i < l.n; ++i){
+    //逐层打印
+    for(i = 0; i < l.n; ++i){          
         //printf("[");
         for(j = 0; j < l.size*l.size*l.c; ++j){
             //if(j > 0) printf(",");
@@ -237,6 +242,7 @@ void rgbgr_net(char *cfgfile, char *weightfile, char *outfile)
     save_weights(net, outfile);
 }
 
+//重置归一化层？
 void reset_normalize_net(char *cfgfile, char *weightfile, char *outfile)
 {
     gpu_index = -1;
@@ -400,6 +406,7 @@ void visualize(char *cfgfile, char *weightfile)
 #endif
 }
 
+//主函数入口，
 int main(int argc, char **argv)
 {
     //test_resize("data/bad.jpg");
