@@ -425,10 +425,10 @@ int main(int argc, char **argv)
     gpu_index = -1;
 #else
     if(gpu_index >= 0){
-        cuda_set_device(gpu_index);
+        cuda_set_device(gpu_index);          //GPU索引
     }
 #endif
-
+    //下面根据不同的命令选择不同的子函数，这些子函数在此文件的最上面生命过了
     if (0 == strcmp(argv[1], "average")){
         average(argc, argv);
     } else if (0 == strcmp(argv[1], "yolo")){
@@ -440,7 +440,7 @@ int main(int argc, char **argv)
     } else if (0 == strcmp(argv[1], "detector")){
         run_detector(argc, argv);
     } else if (0 == strcmp(argv[1], "detect")){
-        float thresh = find_float_arg(argc, argv, "-thresh", .5);
+        float thresh = find_float_arg(argc, argv, "-thresh", .5);    //默认阈值为0.5
         char *filename = (argc > 4) ? argv[4]: 0;
         char *outfile = find_char_arg(argc, argv, "-out", 0);
         int fullscreen = find_arg(argc, argv, "-fullscreen");
