@@ -9,17 +9,19 @@
 
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
-list *get_paths(char *filename)
+//获取文件列表，这里输入的应该是生成的那个txt文件，存储的是训练文件的绝对路径，每一行为一个
+list *get_paths(char *filename)  
 {
     char *path;
-    FILE *file = fopen(filename, "r");
-    if(!file) file_error(filename);
+    FILE *file = fopen(filename, "r");       //只读形式打开
+    if(!file) file_error(filename);         
     list *lines = make_list();
     while((path=fgetl(file))){
-        list_insert(lines, path);
+        list_insert(lines, path);          
+        //这里是每一行放入一个列表里了，这个列表的定义没有仔细看，可以认为是一个容器
     }
     fclose(file);
-    return lines;
+    return lines;   
 }
 
 /*

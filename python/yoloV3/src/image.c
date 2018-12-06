@@ -14,6 +14,29 @@ int windows = 0;
 
 float colors[6][3] = { {1,0,1}, {0,0,1},{0,1,1},{0,1,0},{1,1,0},{1,0,0} };
 
+
+void save_video(image p, CvVideoWriter *mVideoWriter)
+{
+    image copy = copy_image(p);        //拷贝一份图片
+    if(p.c == 3) rgbgr_image(copy);    //如果是三通道的话，就把通道变换，从RGB->BGR因为opencv的格式是BGR
+    int x,y,k;         
+ 
+    IplImage *disp = cvCreateImage(cvSize(p.w,p.h), IPL_DEPTH_8U, p.c);     //opencv  Ipiimage格式数据，创建
+    int step = disp->widthStep;        //宽度，就是每一次索引的行数*width+cols,这是一维到二维的索引变换必须的
+    for(y = 0; y < p.h; ++y){
+        for(x = 0; x < p.w; ++x){
+            for(k= 0; k < p.c; ++k){
+                disp->imageData[y*step + x*p.c + k] = (unsigned char)(get_pixel(copy,x,y,k)*255);
+            }
+        }
+    }
+    //循环就是把作者自己定义的image图像的数据保存到IpIimage类的数据之中
+    cvWriteFrame(mVideoWriter,disp);           //写入视频
+    cvReleaseImage(&disp);          //释放disp内存
+    free_image(copy);         //释放copy内存
+}
+
+
 float get_color(int c, int x, int max)
 {
     float ratio = ((float)x/max)*5;
@@ -527,6 +550,11 @@ image copy_image(image p)
 void rgbgr_image(image im)
 {
     int i;
+    /*
+    作者定义的应该是R,G,B内存分开一个通道一个通道存的，而不是同一个位置的三个通道连续存储，所以交换的时候
+    所以需要把从0到w*h  以及2*w*h到3*w*h的数据进行交换就可以了
+    下面的循环就是做了这个事情。
+    */
     for(i = 0; i < im.w*im.h; ++i){
         float swap = im.data[i];
         im.data[i] = im.data[i+im.w*im.h*2];

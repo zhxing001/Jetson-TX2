@@ -19,10 +19,10 @@ void train_detector(char *datacfg, char *cfgfile, char *weightfile, int *gpus, i
     int seed=rand();
     这样就可以产生随机数了，因为每时每刻time(0)是不同的，所以就会产生不同的随机种子
     */
-    char *base = basecfg(cfgfile);
-    printf("%s\n", base);
-    float avg_loss = -1;
-    network **nets = calloc(ngpus, sizeof(network));
+    char *base = basecfg(cfgfile);       //配置文件
+    printf("%s\n", base);        
+    float avg_loss = -1;            
+    network **nets = calloc(ngpus, sizeof(network));     //分配空间
 
     srand(time(0));
     int seed = rand();
@@ -40,6 +40,7 @@ void train_detector(char *datacfg, char *cfgfile, char *weightfile, int *gpus, i
 
     int imgs = net->batch * net->subdivisions * ngpus;
     printf("Learning Rate: %g, Momentum: %g, Decay: %g\n", net->learning_rate, net->momentum, net->decay);
+    //打印学习率，动量下降优化参数，最后一个应该是学习率退火系数
     data train, buffer;
 
     layer l = net->layers[net->n - 1];
