@@ -3,13 +3,22 @@
 static int coco_ids[] = {1,2,3,4,5,6,7,8,9,10,11,13,14,15,16,17,18,19,20,21,22,23,24,25,27,28,31,32,33,34,35,36,37,38,39,40,41,42,43,44,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,67,70,72,73,74,75,76,77,78,79,80,81,82,84,85,86,87,88,89,90};
 
 
+//训练yolo的代码
 void train_detector(char *datacfg, char *cfgfile, char *weightfile, int *gpus, int ngpus, int clear)
 {
+    //配置，训练列表，模型保存位置
     list *options = read_data_cfg(datacfg);
     char *train_images = option_find_str(options, "train", "data/train.list");
     char *backup_directory = option_find_str(options, "backup", "/backup/");
-
+    
     srand(time(0));
+    /*
+    这是随机数的意思，time(0)是1970年到现在的秒数，所以这样的话每次得到的随机种子都是不一样的
+    典型的应用一般是：
+    srand(time(0));
+    int seed=rand();
+    这样就可以产生随机数了，因为每时每刻time(0)是不同的，所以就会产生不同的随机种子
+    */
     char *base = basecfg(cfgfile);
     printf("%s\n", base);
     float avg_loss = -1;
